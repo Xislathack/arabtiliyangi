@@ -34,18 +34,20 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # --- Streamlit App ---
 st.title("Vocabulary Practice")
 
 words = get_words_from_file()
 
-if "displayed_words" not in st.session_state or st.button("Next Words"):
+if "displayed_words" not in st.session_state:
+    st.session_state.displayed_words = get_random_words(words, WORDS_TO_DISPLAY)
+
+if st.button("Next Words"):
     st.session_state.displayed_words = get_random_words(words, WORDS_TO_DISPLAY)
 
 if st.session_state.displayed_words:
-    cols = st.columns(WORDS_TO_DISPLAY)  # Create 4 columns
+    cols = st.columns(WORDS_TO_DISPLAY)
     for i, word in enumerate(st.session_state.displayed_words):
-        cols[i].write(word)  # Write each word in a column
+        cols[i].write(word)
 else:
     st.write("Vocabulary list is empty.")
